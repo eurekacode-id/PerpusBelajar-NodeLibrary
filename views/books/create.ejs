@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('../partials/header.ejs') %> 
+    
+    <body class="d-flex flex-column min-vh-100">
+        
+        <%- include ('../partials/nav.ejs') %> 
+        
+        <div class="container col-lg-6 align-items-center">
+            <main role="main" class="pb-3">
+                <div class="align-items-center">
+                    <form action='/books/create' method='post'  encType="multipart/form-data">
+                        <h2 class="text-center">Add New Book</h2>
+                        <label for="title" class="form-group">Title</label>
+                        <input type="text" name="title" class="form-control" required />
+                        <div class="title error form-text text-danger"></div>
+            
+                        <label for="author" class="form-group">Author</label>
+                        <input type="text" name="author" class="form-control" required />
+                        <div class="author error form-text text-danger"></div>
+
+                        <label for="isbn" class="form-group">ISBN</label>
+                        <input type="text" name="isbn" class="form-control" required />
+                        <div class="isbn error form-text text-danger"></div>
+            
+                        <label for="cover_file_name" class="form-group">Book Cover</label>
+                        <input type="file" name="cover_file_name" class="form-control" required />
+                        <div class="cover_file_name error form-text text-danger"></div>
+
+                        <button class="btn btn-primary btn-block">Submit</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+        <%- include ('../partials/footer.ejs') %> 
+        
+    </body>
+</html>

@@ -1,0 +1,51 @@
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="<%= logopath %>" width="100" height="50"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse justify-content-between">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/books">Book</a>
+                    </li>
+                    <% if(user && (user.role == 'admin' || user.role == 'superadmin')) { %>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/books/create">Add New Book</a>
+                        </li>
+                    <% }  %>
+                </ul>
+                <ul class="navbar-nav">
+                    <% if(user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href='#'>Welcome, <%= user.email %></a>
+                        </li>
+                        <% if(user.role == 'superadmin') { %>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/addadmin">Add Admin</a>
+                            </li>
+                        <% } %>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/logout">Logout</a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/signup">Signup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/login">Login</a>
+                        </li>
+                    <% } %>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

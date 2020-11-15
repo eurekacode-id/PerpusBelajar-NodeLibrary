@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('../partials/header.ejs') %> 
+    
+    <body class="d-flex flex-column min-vh-100">
+        
+        <%- include ('../partials/nav.ejs') %> 
+        
+        <div class="container">
+            <main role="main" class="pb-3">
+                <h3 class="display-4"><%= title %></h3>
+
+                <div class="row justify-content-center m-3">
+                    <div class="col-sm-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><%= book.title %></h2>
+                            </div>
+                            <div class="card-body text-center">
+                                <% let imagePath = '/images/no_image_found.jpg'; %>
+                                <% if(book.cover_file_name && book.cover_file_name != '') {
+                                    imagePath = '/images/books/' + book.cover_file_name;
+                                } %>
+                                <img class="card-img-top imageThumbnail" src="<%= imagePath %>" alt="<%= book.title %>" />
+
+                                <h4>ISBN: <%= book.isbn %></h4>
+                                <h4>Author: <%= book.author %></h4>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/books" class="btn btn-primary">Back</a>
+                                <% if(user && (user.role == 'admin' || user.role == 'superadmin')) { %>
+                                    <!-- check if user logged in and role is admin -->
+                                    <a href="/books/edit/<%= book._id %>" class="btn btn-primary">Edit</a>
+                                    <a class="delete btn btn-danger" data-doc="<%= book._id %>">delete</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <%- include ('../partials/footer.ejs') %> 
+
+        <script>
+            const trashcan = document.querySelector('a.delete');
+    
+            trashcan.addEventListener('click', (e) => {
+                const endpoint = `/books/${trashcan.dataset.doc}`;
+    
+                fetch(endpoint, {
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.href = data.redirect
+                })
+                .catch((err) => console.log(err));
+            });
+        </script>
+    </body>
+</html>

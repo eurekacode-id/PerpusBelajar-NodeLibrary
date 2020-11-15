@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('../partials/header.ejs') %> 
+    
+    <body class="d-flex flex-column min-vh-100">
+        
+        <%- include ('../partials/nav.ejs') %> 
+        
+        <div class="container">
+            <main role="main" class="pb-3">
+                <div class="jumbotron">
+                    <div class="text-center">
+                        <h1>
+                            Enjoy the collections of TheLibrary!
+                        </h1>
+                    </div>
+                </div>
+                <% if(user && (user.role == 'admin' || user.role == 'superadmin')) { %>
+                    <!-- check if user logged in and role is admin -->
+                    <div class="row">
+                        <a href="/books/create" class="btn btn-success btn-block">Add new book</a>
+                    </div>
+                <% } %>
+                
+                <% if (typeof(books) !== 'undefined' && books.length > 0) {  %>
+                    <div class="row">
+                        <div class="card-deck">
+                    <% books.forEach(book => { %>
+                        <% let imagePath = '/images/no_image_found.jpg'; %>
+                        <% if(book.cover_file_name && book.cover_file_name != '') {
+                            imagePath = '/images/books/' + book.cover_file_name;
+                        } %>
+                        <div class="card card-m3" style="min-width:18rem;max-width:30.5%;">
+                            <div class="card-header"><h3><%= book.title %></h3></div>
+                            <img class="card-img-top imageThumbnail" src="<%= imagePath %>" alt="<%= book.title %>"/>
+                            <div class="card-footer text-center">
+                                <a href="/books/<%= book._id %>" class="btn btn-primary">View</a>
+                                <% if(user && (user.role == 'admin' || user.role == 'superadmin')) { %>
+                                    <!-- check if user logged in and role is admin -->
+                                    <a href="/books/edit/<%= book._id %>" class="btn btn-primary">Edit</a>
+                                    <a class="delete btn btn-danger" data-doc="<%= book._id %>">delete</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <p> Sorry, there is no book to display currently</p>
+                <% } %>
+                
+            </main>
+        </div>
+
+        <%- include ('../partials/footer.ejs') %> 
+        <script>
+            const trashcan = document.querySelector('a.delete');
+    
+            trashcan.addEventListener('click', (e) => {
+                const endpoint = `/books/${trashcan.dataset.doc}`;
+    
+                fetch(endpoint, {
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.href = data.redirect
+                })
+                .catch((err) => console.log(err));
+            });
+        </script>
+    </body>
+</html>
